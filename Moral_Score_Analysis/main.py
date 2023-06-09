@@ -64,6 +64,26 @@ def get_total_scores(df):
 
 
 """
+根据总分结果集由高到低排序
+并根据及格线判断是否及格
+"""
+
+
+def is_total_score_passing(df, p_line):
+    total_scores = get_total_scores(df)
+    # 对结果进行排序
+    sorted_scores = total_scores.sort_values(ascending=False)
+    # 找出大于等于70分的学生
+    students_above_70 = sorted_scores[sorted_scores >= p_line]
+    # 找出小于70分的学生
+    students_below_70 = sorted_scores[sorted_scores < p_line]
+    print('Scores above or equal to 70:')
+    print(students_above_70)
+    print('\nScores below 70:')
+    print(students_below_70)
+
+
+"""
 画出分布图
 """
 
@@ -89,32 +109,34 @@ def draw_dist_map(result, isRuledata):
         plt.xlabel('参与次数', fontproperties=font)
         plt.ylabel('学生数量', fontproperties=font)
 
-        # 显示图形
-        plt.show()
     else:
-        # 创建散点图
-        plt.scatter(range(len(result)), result)
+        # 创建直方图
+        plt.hist(result, bins=20, edgecolor='black')
 
         # 添加标题和轴标签
-        plt.title('数据分布', fontproperties=font)
-        plt.xlabel('学生', fontproperties=font)
-        plt.ylabel('总分', fontproperties=font)
+        plt.title('学生总分分布', fontproperties=font)
+        plt.xlabel('总分', fontproperties=font)
+        plt.ylabel('学生数量', fontproperties=font)
 
-        # 显示图形
-        plt.show()
+    # 显示图形
+    plt.show()
 
 
 if __name__ == '__main__':
     # 从Excel文件中读取数据
-    df = pd.read_excel('res/file.xlsx')
+    df = pd.read_excel('res/file_2.xlsx')
 
     # 删除所有列都是NaN的行
     df = df.dropna(how='all')
 
+    # 70分及格
+    is_total_score_passing(df, 70)
+
+    # 找出参加活动最少与最多的前3名学生
     # print(find_extremum(df, 3, False))  # 真为最少，假为最多
 
-    print(get_total_scores(df))
+    # 求学生班会参与次数的分布情况
+    # draw_dist_map(get_stu_count_by_keyword(df, "班会"), False)
 
-    draw_dist_map(get_total_scores(df), False)
-
-    # draw_dist_map("班会", get_stu_count_by_keyword(df, "班会"))
+    # 求学生方阵参与次数的分布情况
+    # draw_dist_map(get_stu_count_by_keyword(df, "问卷"), False)
