@@ -6,4 +6,8 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
 .idea/
+
+# 忽略所有表格文件
+*/*/.xlsx

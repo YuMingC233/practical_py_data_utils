@@ -88,7 +88,7 @@ def is_total_score_passing(df, p_line):
 """
 
 
-def draw_dist_map(result, isRuledata):
+def draw_dist_map(keyword, result, isRuledata):
     # 设置字体为SimHei，用来显示中文
     font = FontProperties(fname="res/艺黑简.ttf")
 
@@ -105,18 +105,18 @@ def draw_dist_map(result, isRuledata):
         plt.bar(sorted_result.index, sorted_result.values)
 
         # 添加标题和轴标签
-        plt.title('参与次数分布', fontproperties=font)
-        plt.xlabel('参与次数', fontproperties=font)
-        plt.ylabel('学生数量', fontproperties=font)
+        plt.title('%s参与次数分布' % keyword, fontproperties=font)
+        plt.xlabel('%s参与次数' % keyword, fontproperties=font)
+        plt.ylabel('学生人数', fontproperties=font)
 
     else:
         # 创建直方图
         plt.hist(result, bins=20, edgecolor='black')
 
         # 添加标题和轴标签
-        plt.title('学生总分分布', fontproperties=font)
-        plt.xlabel('总分', fontproperties=font)
-        plt.ylabel('学生数量', fontproperties=font)
+        plt.title('学生%s参与次数分布' % keyword, fontproperties=font)
+        plt.xlabel('%s参与次数' % keyword, fontproperties=font)
+        plt.ylabel('学生人数', fontproperties=font)
 
     # 显示图形
     plt.show()
@@ -129,14 +129,21 @@ if __name__ == '__main__':
     # 删除所有列都是NaN的行
     df = df.dropna(how='all')
 
-    # 70分及格
-    is_total_score_passing(df, 70)
+    # keyword = "班会"
+    # keyword = "问卷"
+    # keyword = "方阵"
+
+    # 以70分为基准的具体学生分布情况
+    # is_total_score_passing(df, 70)
 
     # 找出参加活动最少与最多的前3名学生
     # print(find_extremum(df, 3, False))  # 真为最少，假为最多
 
     # 求学生班会参与次数的分布情况
-    # draw_dist_map(get_stu_count_by_keyword(df, "班会"), False)
+    # draw_dist_map(keyword, get_stu_count_by_keyword(df, keyword), False)
+
+    # 求学生问卷参与次数的分布情况
+    # draw_dist_map(keyword, get_stu_count_by_keyword(df, keyword), False)
 
     # 求学生方阵参与次数的分布情况
-    # draw_dist_map(get_stu_count_by_keyword(df, "问卷"), False)
+    # draw_dist_map(keyword, get_stu_count_by_keyword(df, keyword), False)
