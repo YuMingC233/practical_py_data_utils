@@ -13,8 +13,8 @@ from concurrent.futures import ThreadPoolExecutor
 # 从.env文件中导入账号(ACCOUNT)和密码(PASSWORD)
 dotenv_path = '../.env'
 load_dotenv(dotenv_path)
-ACCOUNT = os.getenv('ACCOUNT')
-PASSWORD = os.getenv('PASSWORD')
+ACCOUNT = os.getenv('AFD_ACCOUNT')
+PASSWORD = os.getenv('AFD_PASSWORD')
 
 
 # 使用selenium登录网页后获取网页源代码
