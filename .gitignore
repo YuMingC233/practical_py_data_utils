@@ -13,3 +13,7 @@
 */*/.xlsx
 **/res/
 **/static
+/test/geckodriver.log
+/.env
+/test/main.py
+**/output
