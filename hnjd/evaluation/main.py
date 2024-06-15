@@ -1,7 +1,6 @@
 import os
 import random
 import time
-import json
 import requests
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -43,7 +42,10 @@ def select_teacher(driver):
     :return:
     """
 
-    need_handle = input("请输入您需要手动评价的老师，使用英文逗号分隔。" "选择完毕后按回车键继续，为空则全部随机：")
+    need_handle = input(
+        "请输入您需要手动评价的老师，使用英文逗号分隔。"
+        "选择完毕后按回车键继续，为空则全部随机："
+    )
     print("正在选择老师...")
     # 获取css path为#tempGrid .jqgrow的所有老师的行
     rows = driver.find_elements(By.CLASS_NAME, "jqgrow")
@@ -64,7 +66,12 @@ def select_teacher(driver):
             row.click()
             # 等待2秒
             time.sleep(2)
-            if i + 1 in need_handle.split(","):
+            # 将need_handle分割并转换为整数列表
+            need_handle_list = [
+                int(j.strip()) for j in need_handle.split(",") if j.strip().isdigit()
+            ]
+            # 检查i + 1是否在这个列表中
+            if (i + 1) in need_handle_list:
                 fill_form(driver, True)
             else:
                 fill_form(driver, False)
@@ -72,8 +79,13 @@ def select_teacher(driver):
             break
 
 
-# 自动填写表单方法
 def fill_form(driver, Handle):
+    """
+    自动填写表单方法
+    :param driver:
+    :param Handle:
+    :return:
+    """
     global all_select
 
     all_select = False
@@ -111,7 +123,10 @@ def fill_form(driver, Handle):
         # 点击提交按钮
         submit()
     else:
-        if input("请检查评分是否正确，正确则按回车键继续，否则请手动评价后再按回车：") == "":
+        if (
+            input("请检查评分是否正确，正确则按回车键继续，否则请手动评价后再按回车：")
+            == ""
+        ):
             print("正在生成评语...")
         comment = get_comment(generate_prompt()).content
         # comment = hitokoto_comment()
@@ -202,7 +217,11 @@ def random_choice(driver):
 # 自动根据评价等级生成评语的方法
 def get_comment(prompt):
     msg.append(
-        {"role": "user", "content": "请你根据下面的质量评价等级，为老师编写不多于50字评价的评论：\n" + prompt}
+        {
+            "role": "user",
+            "content": "请你根据下面的质量评价等级，为老师编写不多于50字评价的评论：\n"
+            + prompt,
+        }
     )
 
     response = client.chat.completions.create(model="gpt-4-1106-preview", messages=msg)
