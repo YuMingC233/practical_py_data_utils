@@ -1,0 +1,6 @@
+uiautomation
+pywin32
+keyboard
+pynput
+configparser
+Pillow
